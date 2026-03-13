@@ -62,15 +62,15 @@ export function buildRecommendCard(
       {
         type: "image" as const,
         url: gift.imageUrl,
-        size: "full" as any,
+        size: "sm" as any,
         aspectRatio: "1:1",
         aspectMode: "cover" as const,
-        flex: 0,
+        flex: 1,
       },
       {
         type: "box" as const,
         layout: "vertical" as const,
-        flex: 1,
+        flex: 3,
         paddingStart: "12px" as any,
         justifyContent: "center" as any,
         contents: [
