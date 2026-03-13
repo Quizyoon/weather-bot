@@ -166,74 +166,50 @@ export function buildRecommendCard(
                   color: "#111111",
                 },
                 {
-                  type: "box",
-                  layout: "horizontal",
+                  type: "text",
+                  text: ` ${weather.city}`,
+                  size: "12px" as any,
+                  color: "#111111",
+                  weight: "bold",
                   margin: "8px" as any,
-                  alignItems: "center",
                   contents: [
                     {
-                      type: "text",
+                      type: "icon",
+                      url: "https://raw.githubusercontent.com/Quizyoon/weather-bot/main/img/place.png",
+                      size: "12px" as any,
+                    },
+                    {
+                      type: "span",
                       text: ` ${weather.city}`,
-                      size: "12px",
-                      color: "#111111",
                       weight: "bold",
-                      contents: [
-                        {
-                          type: "icon",
-                          url: "https://raw.githubusercontent.com/Quizyoon/weather-bot/main/img/place.png",
-                          size: "12px",
-                        },
-                        {
-                          type: "span",
-                          text: ` ${weather.city}`,
-                          weight: "bold",
-                        },
-                      ],
                     },
                   ],
                 } as any,
                 {
-                  type: "box",
-                  layout: "horizontal",
+                  type: "text",
+                  text: ` ${weather.tempMax}° / ${weather.tempMin}°  ${weather.humidity}%`,
+                  size: "12px" as any,
                   margin: "8px" as any,
-                  alignItems: "center",
                   contents: [
                     {
-                      type: "text",
-                      contents: [
-                        {
-                          type: "span",
-                          text: `${weather.tempMax}°`,
-                          color: "#000000",
-                        },
-                        {
-                          type: "span",
-                          text: ` / ${weather.tempMin}°  `,
-                          color: "#999999",
-                        },
-                      ],
-                      text: " ",
-                      size: "12px",
-                      flex: 0,
+                      type: "span",
+                      text: `${weather.tempMax}°`,
+                      color: "#000000",
                     },
                     {
-                      type: "text",
+                      type: "span",
+                      text: ` / ${weather.tempMin}°  `,
+                      color: "#999999",
+                    },
+                    {
+                      type: "icon",
+                      url: "https://raw.githubusercontent.com/Quizyoon/weather-bot/main/img/Fill%204.png",
+                      size: "10px" as any,
+                    },
+                    {
+                      type: "span",
                       text: ` ${weather.humidity}%`,
-                      size: "12px",
                       color: "#96B2FF",
-                      flex: 0,
-                      contents: [
-                        {
-                          type: "icon",
-                          url: "https://raw.githubusercontent.com/Quizyoon/weather-bot/main/img/Fill%204.png",
-                          size: "10px",
-                        },
-                        {
-                          type: "span",
-                          text: ` ${weather.humidity}%`,
-                          color: "#96B2FF",
-                        },
-                      ],
                     },
                   ],
                 } as any,
