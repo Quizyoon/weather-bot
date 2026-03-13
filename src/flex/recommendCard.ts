@@ -158,27 +158,15 @@ export function buildRecommendCard(
                 },
                 {
                   type: "text",
-                  text: ` ${weather.city}`,
+                  text: `📍 ${weather.city}`,
                   size: "12px" as any,
                   color: "#111111",
                   weight: "bold",
                   margin: "8px" as any,
-                  contents: [
-                    {
-                      type: "icon",
-                      url: "https://raw.githubusercontent.com/Quizyoon/weather-bot/main/img/place.png",
-                      size: "12px" as any,
-                    },
-                    {
-                      type: "span",
-                      text: ` ${weather.city}`,
-                      weight: "bold",
-                    },
-                  ],
-                } as any,
+                },
                 {
                   type: "text",
-                  text: ` ${weather.tempMax}° / ${weather.tempMin}°  ${weather.humidity}%`,
+                  text: " ",
                   size: "12px" as any,
                   margin: "8px" as any,
                   contents: [
@@ -193,13 +181,8 @@ export function buildRecommendCard(
                       color: "#999999",
                     },
                     {
-                      type: "icon",
-                      url: "https://raw.githubusercontent.com/Quizyoon/weather-bot/main/img/Fill%204.png",
-                      size: "10px" as any,
-                    },
-                    {
                       type: "span",
-                      text: ` ${weather.humidity}%`,
+                      text: `💧${weather.humidity}%`,
                       color: "#96B2FF",
                     },
                   ],
