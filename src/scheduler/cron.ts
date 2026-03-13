@@ -44,8 +44,8 @@ async function sendDailyRecommendation(client: Client): Promise<void> {
 export function setupScheduler(client: Client): void {
   const tz = { timezone: "Asia/Seoul" as const };
 
-  // 매일 아침 8시 (KST) 날씨 기반 선물 추천 푸시
-  cron.schedule("0 8 * * *", () => sendDailyRecommendation(client), tz);
+  // 매일 오후 3시 (KST) 날씨 기반 선물 추천 푸시
+  cron.schedule("0 15 * * *", () => sendDailyRecommendation(client), tz);
 
-  console.log("Scheduler initialized — daily push at 08:00 KST");
+  console.log("Scheduler initialized — daily push at 15:00 KST");
 }

@@ -1,9 +1,6 @@
-import { FlexMessage, FlexBubble, FlexComponent } from "@line/bot-sdk";
+import { FlexMessage, FlexBubble, FlexBox } from "@line/bot-sdk";
 import { WeatherData, getWeatherEmoji } from "../services/weather";
-import {
-  GiftProduct,
-  WeatherCondition,
-} from "../services/giftshop";
+import { GiftProduct, WeatherCondition } from "../services/giftshop";
 
 interface RecommendCardOptions {
   weather: WeatherData;
@@ -18,11 +15,9 @@ export function buildRecommendCard(
   const { weather, message, gifts } = options;
   const emoji = getWeatherEmoji(weather.weatherCode);
 
-  const giftBubbles: FlexComponent[] = gifts.map((gift) => ({
+  const productItems: FlexBox[] = gifts.map((gift) => ({
     type: "box" as const,
     layout: "horizontal" as const,
-    margin: "lg" as any,
-    spacing: "md" as any,
     contents: [
       {
         type: "box" as const,
@@ -32,26 +27,38 @@ export function buildRecommendCard(
           {
             type: "text" as const,
             text: gift.name,
-            size: "sm" as const,
+            size: "14px" as any,
             color: "#111111",
             weight: "bold" as const,
             wrap: true,
+            maxLines: 2,
           },
           {
             type: "text" as const,
-            text: `${gift.currency} ${gift.price}`,
-            size: "xs" as const,
+            text: `NT$ ${gift.price}`,
+            size: "12px" as any,
             color: "#999999",
-            margin: "xs" as any,
+            margin: "4px" as any,
           },
         ],
       },
+      {
+        type: "button" as const,
+        action: {
+          type: "uri" as const,
+          label: "선물하기",
+          uri: gift.shopUrl,
+        },
+        style: "link" as const,
+        height: "sm" as const,
+        flex: 0,
+        color: "#111111",
+      } as any,
     ],
-    action: {
-      type: "uri" as const,
-      label: "선물하기",
-      uri: `${gift.shopUrl}?type=gift`,
-    },
+    paddingAll: "12px",
+    backgroundColor: "#F8F8F8",
+    cornerRadius: "8px",
+    margin: "8px" as any,
   }));
 
   const bubble: FlexBubble = {
@@ -62,48 +69,38 @@ export function buildRecommendCard(
       layout: "vertical",
       paddingAll: "16px",
       contents: [
+        // 날씨 타이틀
         {
           type: "text",
-          text: `${emoji} 오늘의 날씨`,
-          size: "lg" as const,
+          text: `${emoji} ${weather.city} ${weather.temp}°`,
+          size: "xl" as const,
           weight: "bold",
           color: "#111111",
         },
+        // 날씨 설명
         {
-          type: "box",
-          layout: "horizontal",
-          margin: "md" as any,
-          contents: [
-            {
-              type: "text",
-              text: `${weather.city}`,
-              size: "sm" as const,
-              color: "#666666",
-              flex: 1,
-            },
-            {
-              type: "text",
-              text: `${weather.temp}° ${weather.description}`,
-              size: "sm" as const,
-              color: "#666666",
-              align: "end" as const,
-              flex: 2,
-            },
-          ],
+          type: "text",
+          text: weather.description,
+          size: "13px" as any,
+          color: "#999999",
+          margin: "4px" as any,
         },
+        // 구분선
         {
           type: "separator",
-          margin: "lg" as any,
+          margin: "16px" as any,
         },
+        // 추천 메시지
         {
           type: "text",
           text: message,
-          size: "sm" as const,
+          size: "14px" as any,
           color: "#333333",
           wrap: true,
-          margin: "lg" as any,
+          margin: "16px" as any,
         },
-        ...giftBubbles,
+        // 상품 목록
+        ...productItems,
       ],
     },
     footer: {
@@ -114,8 +111,8 @@ export function buildRecommendCard(
           type: "button",
           action: {
             type: "uri",
-            label: "기프트샵 둘러보기",
-            uri: "https://giftshop-tw.line.me?type=gift",
+            label: "기프트샵 더보기",
+            uri: "https://giftshop-tw.line.me",
           },
           style: "primary",
           color: "#A5FF05",

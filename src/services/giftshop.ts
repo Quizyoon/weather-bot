@@ -2,126 +2,137 @@ export interface GiftProduct {
   id: string;
   name: string;
   price: number;
-  currency: string;
   imageUrl: string;
   shopUrl: string;
 }
 
-export type WeatherCondition = "rain" | "cold" | "hot" | "warm" | "snow" | "default";
+export type WeatherCondition = "rain" | "cloudy" | "clear" | "dry";
 
-// 스타벅스 기프트샵 상품 매핑 (날씨 조건별)
 const GIFT_MAP: Record<WeatherCondition, GiftProduct[]> = {
+  // 비 올 때 → 우산/우비
   rain: [
     {
-      id: "starbucks-hot-latte",
-      name: "스타벅스 카페 라떼 (HOT)",
-      price: 150,
-      currency: "TWD",
-      imageUrl: "https://giftshop-tw.line.me/img/product/starbucks-hot-latte.jpg",
-      shopUrl: "https://giftshop-tw.line.me",
+      id: "322449198",
+      name: "Coca-Cola 經典口袋晴雨傘",
+      price: 799,
+      imageUrl: "",
+      shopUrl: "https://giftshop-tw.line.me/shipping/322449198",
     },
     {
-      id: "starbucks-hot-choco",
-      name: "스타벅스 핫 초콜릿",
-      price: 150,
-      currency: "TWD",
-      imageUrl: "https://giftshop-tw.line.me/img/product/starbucks-hot-choco.jpg",
-      shopUrl: "https://giftshop-tw.line.me",
-    },
-  ],
-  cold: [
-    {
-      id: "starbucks-hot-americano",
-      name: "스타벅스 카페 아메리카노 (HOT)",
-      price: 130,
-      currency: "TWD",
-      imageUrl: "https://giftshop-tw.line.me/img/product/starbucks-hot-americano.jpg",
-      shopUrl: "https://giftshop-tw.line.me",
+      id: "322378700",
+      name: "莫蘭迪色系口袋款晴雨傘",
+      price: 349,
+      imageUrl: "",
+      shopUrl: "https://giftshop-tw.line.me/shipping/322378700",
     },
     {
-      id: "starbucks-hot-tea",
-      name: "스타벅스 잉글리시 브렉퍼스트 티",
-      price: 140,
-      currency: "TWD",
-      imageUrl: "https://giftshop-tw.line.me/img/product/starbucks-hot-tea.jpg",
-      shopUrl: "https://giftshop-tw.line.me",
+      id: "322403722",
+      name: "ROLLS Eclipse 全日防禦傘",
+      price: 1350,
+      imageUrl: "",
+      shopUrl: "https://giftshop-tw.line.me/shipping/322403722",
     },
   ],
-  hot: [
+  // 흐린 날 → 차/커피
+  cloudy: [
     {
-      id: "starbucks-iced-americano",
-      name: "스타벅스 아이스 아메리카노",
-      price: 140,
-      currency: "TWD",
-      imageUrl: "https://giftshop-tw.line.me/img/product/starbucks-iced-americano.jpg",
-      shopUrl: "https://giftshop-tw.line.me",
+      id: "322312031",
+      name: "綜合花茶禮",
+      price: 505,
+      imageUrl: "",
+      shopUrl: "https://giftshop-tw.line.me/shipping/322312031",
     },
     {
-      id: "starbucks-frappuccino",
-      name: "스타벅스 프라푸치노",
-      price: 170,
-      currency: "TWD",
-      imageUrl: "https://giftshop-tw.line.me/img/product/starbucks-frappuccino.jpg",
-      shopUrl: "https://giftshop-tw.line.me",
+      id: "322200050",
+      name: "黑糖薑茶/黑糖桂圓禮盒",
+      price: 359,
+      imageUrl: "",
+      shopUrl: "https://giftshop-tw.line.me/shipping/322200050",
     },
-  ],
-  warm: [
     {
-      id: "starbucks-iced-latte",
-      name: "스타벅스 아이스 카페 라떼",
-      price: 160,
-      currency: "TWD",
-      imageUrl: "https://giftshop-tw.line.me/img/product/starbucks-iced-latte.jpg",
-      shopUrl: "https://giftshop-tw.line.me",
+      id: "322451132",
+      name: "咖啡點心組",
+      price: 549,
+      imageUrl: "",
+      shopUrl: "https://giftshop-tw.line.me/shipping/322451132",
     },
   ],
-  snow: [
+  // 맑은 날 → 음료 바우처
+  clear: [
     {
-      id: "starbucks-hot-mocha",
-      name: "스타벅스 카페 모카 (HOT)",
-      price: 160,
-      currency: "TWD",
-      imageUrl: "https://giftshop-tw.line.me/img/product/starbucks-hot-mocha.jpg",
-      shopUrl: "https://giftshop-tw.line.me",
+      id: "322135157",
+      name: "全家 大杯熱拿鐵",
+      price: 55,
+      imageUrl: "",
+      shopUrl: "https://giftshop-tw.line.me/voucher/322135157",
+    },
+    {
+      id: "322460146",
+      name: "星巴克 為你星動組合",
+      price: 219,
+      imageUrl: "",
+      shopUrl: "https://giftshop-tw.line.me/voucher/322460146",
+    },
+    {
+      id: "322461768",
+      name: "CoCo都可 紅柚香檸美式(大) 2杯",
+      price: 100,
+      imageUrl: "",
+      shopUrl: "https://giftshop-tw.line.me/voucher/322461768",
     },
   ],
-  default: [
+  // 건조한 날 → 바디케어/핸드크림
+  dry: [
     {
-      id: "starbucks-drip-coffee",
-      name: "스타벅스 오늘의 커피",
-      price: 120,
-      currency: "TWD",
-      imageUrl: "https://giftshop-tw.line.me/img/product/starbucks-drip-coffee.jpg",
-      shopUrl: "https://giftshop-tw.line.me",
+      id: "322360411",
+      name: "Aesop 經典護手霜(75mL)",
+      price: 1050,
+      imageUrl: "",
+      shopUrl: "https://giftshop-tw.line.me/shipping/322360411",
+    },
+    {
+      id: "322319404",
+      name: "MONCLOS COMFORT護手霜+DIY鑰匙圈",
+      price: 590,
+      imageUrl: "",
+      shopUrl: "https://giftshop-tw.line.me/shipping/322319404",
+    },
+    {
+      id: "322193974",
+      name: "MUMĆHIT 生日快樂香氛心意禮1+1",
+      price: 290,
+      imageUrl: "",
+      shopUrl: "https://giftshop-tw.line.me/shipping/322193974",
     },
   ],
 };
 
 export function getConditionFromWeather(
   type: string,
-  temp: number
+  temp: number,
+  humidity: number
 ): WeatherCondition {
-  if (type === "Snow") return "snow";
-  if (type === "Rain" || type === "Drizzle" || type === "Thunderstorm")
+  // 비/눈/뇌우 → rain
+  if (type === "Rain" || type === "Drizzle" || type === "Thunderstorm" || type === "Snow")
     return "rain";
-  if (temp <= 10) return "cold";
-  if (temp >= 30) return "hot";
-  if (temp >= 20) return "warm";
-  return "cold";
+  // 흐림/안개 → cloudy
+  if (type === "Clouds" || type === "Fog") return "cloudy";
+  // 맑은데 건조 → dry
+  if (type === "Clear" && humidity < 50) return "dry";
+  // 맑음 → clear
+  return "clear";
 }
 
 export function getGiftsByCondition(condition: WeatherCondition): GiftProduct[] {
-  return GIFT_MAP[condition] || GIFT_MAP.default;
+  return GIFT_MAP[condition] || GIFT_MAP.clear;
 }
 
 export function getConditionMessage(condition: WeatherCondition): string {
   const messages: Record<WeatherCondition, string> = {
-    rain: "비 오는 날, 따뜻한 음료로 마음을 전해보세요 ☕",
-    cold: "쌀쌀한 날씨에 따뜻한 선물은 어떨까요? 🧣",
-    hot: "더운 날엔 시원한 음료가 최고! 🧊",
-    warm: "따뜻한 날씨에 어울리는 음료 한 잔 ☕",
-    snow: "눈 오는 날, 달달한 모카로 온기를 전하세요 ❄️",
-    default: "오늘도 좋은 하루! 커피 한 잔 어때요? ☕",
+    rain: "비 오는 날, 소중한 사람에게 우산을 선물해보세요 🌧️",
+    cloudy: "흐린 날엔 따뜻한 차 한 잔 어때요? ☁️",
+    clear: "맑은 날! 시원한 음료 한 잔 선물하세요 ☀️",
+    dry: "건조한 날, 촉촉한 핸드크림 선물은 어떨까요? 🧴",
   };
   return messages[condition];
 }
