@@ -60,13 +60,22 @@ export function buildRecommendCard(
     layout: "horizontal" as const,
     contents: [
       {
-        type: "image" as const,
-        url: gift.imageUrl,
-        size: "44px" as any,
-        aspectRatio: "1:1",
-        aspectMode: "cover" as const,
+        type: "box" as const,
+        layout: "vertical" as const,
+        width: "44px",
+        height: "44px",
         flex: 0,
-      },
+        contents: [
+          {
+            type: "image" as const,
+            url: gift.imageUrl,
+            size: "full" as any,
+            aspectRatio: "1:1",
+            aspectMode: "cover" as const,
+          },
+        ],
+        cornerRadius: "4px",
+      } as any,
       {
         type: "box" as const,
         layout: "vertical" as const,
@@ -127,7 +136,7 @@ export function buildRecommendCard(
         {
           type: "text",
           text: weather.description,
-          size: "16px" as any,
+          size: "18px" as any,
           weight: "bold",
           color: "#111111",
           margin: "4px" as any,
@@ -163,34 +172,30 @@ export function buildRecommendCard(
                   alignItems: "center",
                   contents: [
                     {
-                      type: "box",
-                      layout: "vertical",
-                      width: "8px",
-                      height: "10px",
-                      flex: 0,
-                      contents: [
-                        {
-                          type: "image",
-                          url: "https://raw.githubusercontent.com/Quizyoon/weather-bot/main/img/place.png",
-                          size: "full",
-                          aspectMode: "fit",
-                        },
-                      ],
-                    },
-                    {
                       type: "text",
-                      text: weather.city,
+                      text: ` ${weather.city}`,
                       size: "12px",
                       color: "#111111",
                       weight: "bold",
-                      margin: "4px",
+                      contents: [
+                        {
+                          type: "icon",
+                          url: "https://raw.githubusercontent.com/Quizyoon/weather-bot/main/img/place.png",
+                          size: "12px",
+                        },
+                        {
+                          type: "span",
+                          text: ` ${weather.city}`,
+                          weight: "bold",
+                        },
+                      ],
                     },
                   ],
                 } as any,
                 {
                   type: "box",
                   layout: "horizontal",
-                  margin: "4px" as any,
+                  margin: "8px" as any,
                   alignItems: "center",
                   contents: [
                     {
@@ -212,27 +217,23 @@ export function buildRecommendCard(
                       flex: 0,
                     },
                     {
-                      type: "box",
-                      layout: "vertical",
-                      width: "6px",
-                      height: "9px",
-                      flex: 0,
-                      contents: [
-                        {
-                          type: "image",
-                          url: "https://raw.githubusercontent.com/Quizyoon/weather-bot/main/img/Fill%204.png",
-                          size: "full",
-                          aspectMode: "fit",
-                        },
-                      ],
-                    },
-                    {
                       type: "text",
-                      text: `${weather.humidity}%`,
+                      text: ` ${weather.humidity}%`,
                       size: "12px",
                       color: "#96B2FF",
                       flex: 0,
-                      margin: "2px",
+                      contents: [
+                        {
+                          type: "icon",
+                          url: "https://raw.githubusercontent.com/Quizyoon/weather-bot/main/img/Fill%204.png",
+                          size: "10px",
+                        },
+                        {
+                          type: "span",
+                          text: ` ${weather.humidity}%`,
+                          color: "#96B2FF",
+                        },
+                      ],
                     },
                   ],
                 } as any,
@@ -252,7 +253,7 @@ export function buildRecommendCard(
         {
           type: "box",
           layout: "horizontal",
-          margin: "16px" as any,
+          margin: "24px" as any,
           contents: hourlyBlocks.length > 0
             ? hourlyBlocks
             : [{ type: "filler" as const }],
