@@ -1,4 +1,4 @@
-import { FlexMessage, FlexBubble } from "@line/bot-sdk";
+import { FlexMessage, FlexBubble, FlexCarousel } from "@line/bot-sdk";
 import { WeatherData, getWeatherEmoji, getSmallWeatherEmoji } from "../services/weather";
 import { GiftProduct, WeatherCondition } from "../services/giftshop";
 
@@ -9,11 +9,19 @@ interface RecommendCardOptions {
   gifts: GiftProduct[];
 }
 
+const CONDITION_MSG_EN: Record<WeatherCondition, string> = {
+  rain: "Rainy day — send an umbrella to someone you care about 🌧️",
+  cloudy: "Cloudy day — a warm cup of tea sounds perfect ☁️",
+  clear: "Sunny day! Treat someone to a cool drink ☀️",
+  dry: "Dry weather — a moisturizing gift goes a long way 🧴",
+};
+
 export function buildRecommendCard(
   options: RecommendCardOptions
 ): FlexMessage {
-  const { weather, message, gifts } = options;
+  const { weather, condition, gifts } = options;
   const emoji = getWeatherEmoji(weather.weatherCode);
+  const message = CONDITION_MSG_EN[condition];
 
   // 시간대별 날씨 블록
   const hourlyBlocks = weather.hourly.map((h) => ({
@@ -25,7 +33,7 @@ export function buildRecommendCard(
       {
         type: "text" as const,
         text: h.time,
-        size: "11px" as any,
+        size: "12px" as any,
         color: "#999999",
         align: "center" as const,
       },
@@ -39,7 +47,7 @@ export function buildRecommendCard(
       {
         type: "text" as const,
         text: `${h.temp}°`,
-        size: "13px" as any,
+        size: "12px" as any,
         color: "#111111",
         align: "center" as const,
         weight: "bold" as const,
@@ -48,56 +56,7 @@ export function buildRecommendCard(
     ],
   }));
 
-  // 상품 목록 블록
-  const productItems = gifts.map((gift) => ({
-    type: "box" as const,
-    layout: "horizontal" as const,
-    contents: [
-      {
-        type: "box" as const,
-        layout: "vertical" as const,
-        flex: 1,
-        contents: [
-          {
-            type: "text" as const,
-            text: gift.name,
-            size: "14px" as any,
-            color: "#111111",
-            weight: "bold" as const,
-            wrap: true,
-            maxLines: 2,
-          },
-          {
-            type: "text" as const,
-            text: `NT$ ${gift.price}`,
-            size: "12px" as any,
-            color: "#999999",
-            margin: "4px" as any,
-          },
-        ],
-      },
-      {
-        type: "text" as const,
-        text: "선물하기",
-        size: "13px" as any,
-        color: "#000000",
-        align: "end" as const,
-        gravity: "center" as const,
-        flex: 0,
-        action: {
-          type: "uri" as const,
-          label: "선물하기",
-          uri: gift.shopUrl,
-        },
-      },
-    ],
-    paddingAll: "12px",
-    backgroundColor: "#F0F0F0",
-    cornerRadius: "8px",
-    margin: "8px" as any,
-  }));
-
-  const now = new Date().toLocaleDateString("ko-KR", {
+  const now = new Date().toLocaleDateString("en-US", {
     timeZone: "Asia/Taipei",
     month: "short",
     day: "numeric",
@@ -105,7 +64,8 @@ export function buildRecommendCard(
     minute: "2-digit",
   });
 
-  const bubble: FlexBubble = {
+  // 날씨 버블
+  const weatherBubble: FlexBubble = {
     type: "bubble",
     size: "mega" as any,
     body: {
@@ -113,31 +73,28 @@ export function buildRecommendCard(
       layout: "vertical",
       paddingAll: "16px",
       contents: [
-        // Weather 라벨
         {
           type: "text",
           text: "Weather",
-          size: "13px" as any,
+          size: "12px" as any,
           color: "#999999",
+          weight: "bold",
         },
-        // 날씨 설명 (볼드)
         {
           type: "text",
           text: weather.description,
-          size: "lg" as const,
+          size: "16px" as any,
           weight: "bold",
           color: "#111111",
           margin: "4px" as any,
         },
-        // 날짜
         {
           type: "text",
           text: now,
-          size: "12px" as any,
+          size: "11px" as any,
           color: "#BBBBBB",
           margin: "4px" as any,
         },
-        // 온도 + 이모지
         {
           type: "box",
           layout: "horizontal",
@@ -151,15 +108,16 @@ export function buildRecommendCard(
                 {
                   type: "text",
                   text: `${weather.temp}°`,
-                  size: "3xl" as const,
+                  size: "5xl" as any,
                   weight: "bold",
                   color: "#111111",
                 },
                 {
                   type: "text",
                   text: `📍 ${weather.city}`,
-                  size: "14px" as any,
+                  size: "12px" as any,
                   color: "#111111",
+                  weight: "bold",
                   margin: "8px" as any,
                 },
                 {
@@ -181,12 +139,10 @@ export function buildRecommendCard(
             },
           ],
         },
-        // 구분선
         {
           type: "separator",
           margin: "16px" as any,
         },
-        // 시간대별 날씨
         {
           type: "box",
           layout: "horizontal",
@@ -195,22 +151,53 @@ export function buildRecommendCard(
             ? hourlyBlocks
             : [{ type: "filler" as const }],
         },
-        // 구분선
+      ],
+    },
+  };
+
+  // 상품 버블들
+  const productBubbles: FlexBubble[] = gifts.map((gift) => ({
+    type: "bubble",
+    size: "mega" as any,
+    body: {
+      type: "box",
+      layout: "vertical",
+      paddingAll: "16px",
+      contents: [
         {
-          type: "separator",
-          margin: "16px" as any,
+          type: "text",
+          text: "Gift Recommendation",
+          size: "12px" as any,
+          color: "#999999",
         },
-        // 추천 메시지
         {
           type: "text",
           text: message,
           size: "14px" as any,
           color: "#333333",
           wrap: true,
+          margin: "8px" as any,
+        },
+        {
+          type: "separator",
           margin: "16px" as any,
         },
-        // 상품 목록
-        ...(productItems as any[]),
+        {
+          type: "text",
+          text: gift.name,
+          size: "16px" as any,
+          color: "#111111",
+          weight: "bold",
+          wrap: true,
+          margin: "16px" as any,
+        },
+        {
+          type: "text",
+          text: `NT$ ${gift.price}`,
+          size: "13px" as any,
+          color: "#999999",
+          margin: "8px" as any,
+        },
       ],
     },
     footer: {
@@ -223,20 +210,21 @@ export function buildRecommendCard(
           contents: [
             {
               type: "text",
-              text: "기프트샵 더보기",
-              size: "14px" as any,
+              text: "Send Gift",
+              size: "13px" as any,
               color: "#111111",
               align: "center" as const,
               weight: "bold" as const,
             },
           ],
-          paddingAll: "12px",
+          height: "35px",
+          justifyContent: "center" as any,
           backgroundColor: "#A5FF05",
           cornerRadius: "8px",
           action: {
             type: "uri" as const,
-            label: "기프트샵 더보기",
-            uri: "https://giftshop-tw.line.me",
+            label: "Send Gift",
+            uri: gift.shopUrl,
           },
         } as any,
       ],
@@ -245,11 +233,16 @@ export function buildRecommendCard(
       paddingStart: "16px",
       paddingEnd: "16px",
     },
+  }));
+
+  const carousel: FlexCarousel = {
+    type: "carousel",
+    contents: [weatherBubble, ...productBubbles],
   };
 
   return {
     type: "flex",
     altText: `${emoji} ${weather.city} ${weather.temp}° — ${message}`,
-    contents: bubble,
+    contents: carousel,
   };
 }
