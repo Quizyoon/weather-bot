@@ -30,7 +30,9 @@ scheduler/cron.ts → 매일 15:00 KST → 전체 구독자에게 push
 | `src/services/giftshop.ts` | 날씨→선물 매칭 (rain/cloudy/clear/dry) |
 | `src/services/recommend.ts` | 날씨+선물 조합 → Flex Message 생성 |
 | `src/flex/recommendCard.ts` | LINE Flex Message 카드 빌더 |
+| `src/scheduler/cron.ts` | 매일 15:00 KST 푸시 + 14분 keep-alive ping |
 | `preview.html` | Flex 메시지 HTML 프리뷰 |
+| `img/` | 커스텀 아이콘 에셋 (place.png, Fill 4.png) |
 
 ---
 
@@ -57,6 +59,7 @@ npm start          # 프로덕션 실행
 LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN
 DEFAULT_CITY, DEFAULT_LAT, DEFAULT_LON
 PORT
+RENDER_EXTERNAL_URL  # Render 자동 주입, keep-alive에 사용
 ```
 
 > `.env` 파일은 절대 커밋하지 않는다.
@@ -70,6 +73,13 @@ PORT
 1. `src/flex/recommendCard.ts` 수정 (실제 LINE 메시지)
 2. `preview.html` 동기화 (브라우저 프리뷰)
 3. 색상/레이아웃 변경 시 두 파일 모두 업데이트
+
+### 아이콘 추가/변경
+
+1. `img/` 에 이미지 파일 추가 (3x 해상도 권장)
+2. GitHub에 커밋 & 푸시하여 raw URL 생성
+3. Flex Message에서 `icon` 타입으로 사용 (px 사이즈 지정 가능)
+4. `image` 타입은 px 사이즈 미지원 → box로 감싸서 width/height 지정
 
 ### 선물 상품 추가/변경
 
@@ -94,8 +104,10 @@ PORT
 ### 주의사항
 
 - `.env` 커밋 금지
-- `img/` 디렉토리는 디자인 참고용 에셋 (untracked 상태 유지 가능)
-- 구독자 목록은 in-memory → 서버 재시작 시 리셋됨
+- `img/` 디렉토리는 아이콘 에셋 (GitHub raw URL로 Flex Message에서 사용)
+- 구독자 목록은 in-memory → 서버 재시작 시 리셋됨 (DB 전환 필요)
+- LINE Flex `image`의 `size`는 키워드만 지원 → 정확한 px는 box wrap 필요
+- LINE Flex `icon`은 `size`에 px 지정 가능 (텍스트 인라인 아이콘용)
 
 ---
 
@@ -128,3 +140,25 @@ PORT
 3. LINE webhook URL: https://{domain}/webhook
 4. Health check: GET /health
 ```
+
+---
+
+## Change Log
+
+### 2026-03-13
+
+- 최고기온 블랙, 습도 `#96B2FF` 블루 색상 (span 분리)
+- 시간대별 날씨 하단 디바이더 추가 (색상 `#EEEEEE`)
+- Keep-alive self-ping cron 추가 (14분 간격, sleep 방지)
+- 카드 사이즈 `mega` → `kilo`
+- 선물 상품 썸네일 이미지 추가 (LINE Gift Shop에서 추출)
+- 위치 아이콘 `📍` → 커스텀 `place.png` (icon 타입, 12px)
+- 습도 아이콘 `💧` → 커스텀 `Fill 4.png` (icon 타입, 10px)
+- 아이콘 이미지 3x 해상도로 교체
+- Send Gift 버튼 제거, 상품 행 전체 탭으로 이동
+- More Gifts 버튼 → 회색 (`#F0F0F0`), 높이 40px
+- 제품명 12px 레귤러, 1줄 말줄임 처리
+- 상품 썸네일 44x44px box 고정
+- description 폰트 18px
+- hourly margin 24px, temp-range margin 8px
+- 프리뷰 ↔ Flex 메시지 UI 동기화
