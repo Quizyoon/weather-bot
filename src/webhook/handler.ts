@@ -42,14 +42,22 @@ export async function handleEvent(
 
   if (event.type === "message" && event.message.type === "text") {
     const text = event.message.text.trim();
+    console.log(`Message received: "${text}"`);
 
     if (text === "/오늘" || text === "/today") {
+      console.log("Fetching weather recommendation...");
       const card = await getWeatherRecommendation();
+      console.log("Card result:", card ? "OK" : "null");
       if (card) {
-        await client.replyMessage({
-          replyToken: event.replyToken,
-          messages: [card as any],
-        });
+        try {
+          await client.replyMessage({
+            replyToken: event.replyToken,
+            messages: [card as any],
+          });
+          console.log("Reply sent successfully");
+        } catch (err) {
+          console.error("Reply failed:", err);
+        }
       } else {
         await client.replyMessage({
           replyToken: event.replyToken,
