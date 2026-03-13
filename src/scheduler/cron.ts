@@ -54,11 +54,11 @@ function keepAlive(): void {
 export function setupScheduler(client: Client): void {
   const tz = { timezone: "Asia/Seoul" as const };
 
-  // 매일 오후 3시 (KST) 날씨 기반 선물 추천 푸시
-  cron.schedule("0 15 * * *", () => sendDailyRecommendation(client), tz);
+  // 매일 오전 11:30 (KST) 날씨 기반 선물 추천 푸시
+  cron.schedule("30 11 * * *", () => sendDailyRecommendation(client), tz);
 
   // 14분마다 self-ping → 서버 sleep 방지
   cron.schedule("*/14 * * * *", keepAlive);
 
-  console.log("Scheduler initialized — daily push at 15:00 KST, keep-alive every 14min");
+  console.log("Scheduler initialized — daily push at 11:30 KST, keep-alive every 14min");
 }

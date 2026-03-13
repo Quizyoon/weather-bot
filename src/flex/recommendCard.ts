@@ -10,10 +10,16 @@ interface RecommendCardOptions {
 }
 
 const CONDITION_MSG_EN: Record<WeatherCondition, string> = {
+  typhoon: "Typhoon alert! Stay safe with some comfort snacks 🌀",
   rain: "Rainy day — send an umbrella to someone you care about 🌧️",
+  cold: "Cold day — warm someone's heart with a cozy gift 🧣",
+  uv_high: "High UV today! Protect their skin with a gift 🕶️",
   cloudy: "Cloudy day — a warm cup of tea sounds perfect ☁️",
   clear: "Sunny day! Treat someone to a cool drink ☀️",
+  clear_hot: "Hot day! Send an iced drink to cool down 🧊",
+  clear_cool: "Cool day — a warm drink sounds perfect ☕",
   dry: "Dry weather — a moisturizing gift goes a long way 🧴",
+  dust: "Dusty air — stay indoors and enjoy a warm cup of tea 😷",
 };
 
 export function buildRecommendCard(

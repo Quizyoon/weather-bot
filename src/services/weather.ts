@@ -14,6 +14,8 @@ export interface WeatherData {
   description: string;
   city: string;
   hourly: HourlyForecast[];
+  pm25: number;
+  uv: number;
 }
 
 const DEFAULT_CITY = process.env.DEFAULT_CITY || "Taipei";
@@ -78,7 +80,7 @@ export async function getCurrentWeather(): Promise<WeatherData> {
     return cachedWeather;
   }
 
-  const url = `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${DEFAULT_CITY}&days=1&aqi=no`;
+  const url = `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${DEFAULT_CITY}&days=1&aqi=yes`;
 
   const res = await fetch(url);
   if (!res.ok) {
@@ -114,6 +116,9 @@ export async function getCurrentWeather(): Promise<WeatherData> {
     }
   }
 
+  const pm25 = current.air_quality?.pm2_5 ?? 0;
+  const uv = current.uv ?? 0;
+
   const weather: WeatherData = {
     temp: Math.round(current.temp_c),
     tempMax: Math.round(forecast.day.maxtemp_c),
@@ -124,6 +129,8 @@ export async function getCurrentWeather(): Promise<WeatherData> {
     description: wmo.description,
     city: DEFAULT_CITY,
     hourly,
+    pm25: Math.round(pm25),
+    uv,
   };
 
   cachedWeather = weather;

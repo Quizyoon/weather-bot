@@ -11,7 +11,7 @@ export async function getWeatherRecommendation(): Promise<FlexMessage | null> {
   try {
     const weather = await getCurrentWeather();
     const type = getWeatherType(weather.weatherCode);
-    const condition = getConditionFromWeather(type, weather.temp, weather.humidity);
+    const condition = getConditionFromWeather(type, weather.temp, weather.humidity, weather.pm25, weather.uv, weather.windSpeed);
     const gifts = getGiftsByCondition(condition);
     const message = getConditionMessage(condition);
 
