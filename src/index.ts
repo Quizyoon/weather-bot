@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import { middleware, Client, MiddlewareConfig, ClientConfig } from "@line/bot-sdk";
+import { middleware, messagingApi, MiddlewareConfig } from "@line/bot-sdk";
 import { handleEvent } from "./webhook/handler";
 import { setupScheduler } from "./scheduler/cron";
 
@@ -8,11 +8,10 @@ const middlewareConfig: MiddlewareConfig = {
   channelSecret: process.env.LINE_CHANNEL_SECRET!,
 };
 
-const clientConfig: ClientConfig = {
+const client = new messagingApi.MessagingApiClient({
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN!,
-};
+});
 
-const client = new Client(clientConfig);
 const app = express();
 
 // LINE webhook

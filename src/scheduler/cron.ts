@@ -1,6 +1,8 @@
 import cron from "node-cron";
-import { Client } from "@line/bot-sdk";
+import { messagingApi } from "@line/bot-sdk";
 import { getWeatherRecommendation } from "../services/recommend";
+
+type Client = messagingApi.MessagingApiClient;
 
 // 구독자 목록 (추후 DB로 이동)
 const subscribers: Set<string> = new Set();
@@ -34,7 +36,10 @@ async function sendDailyRecommendation(client: Client): Promise<void> {
 
   for (const userId of users) {
     try {
-      await client.pushMessage(userId, card);
+      await client.pushMessage({
+        to: userId,
+        messages: [card as any],
+      });
     } catch (err) {
       console.error(`Failed to push to ${userId}:`, err);
     }
