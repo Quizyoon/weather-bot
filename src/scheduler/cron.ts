@@ -46,11 +46,19 @@ async function sendDailyRecommendation(client: Client): Promise<void> {
   }
 }
 
+function keepAlive(): void {
+  const url = process.env.RENDER_EXTERNAL_URL || `http://localhost:${process.env.PORT || 3001}`;
+  fetch(`${url}/health`).catch(() => {});
+}
+
 export function setupScheduler(client: Client): void {
   const tz = { timezone: "Asia/Seoul" as const };
 
   // 매일 오후 3시 (KST) 날씨 기반 선물 추천 푸시
   cron.schedule("0 15 * * *", () => sendDailyRecommendation(client), tz);
 
-  console.log("Scheduler initialized — daily push at 15:00 KST");
+  // 14분마다 self-ping → 서버 sleep 방지
+  cron.schedule("*/14 * * * *", keepAlive);
+
+  console.log("Scheduler initialized — daily push at 15:00 KST, keep-alive every 14min");
 }
