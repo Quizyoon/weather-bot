@@ -52,11 +52,25 @@ const WMO_CODES: Record<number, { description: string; type: string }> = {
   99: { description: "Heavy thunderstorm", type: "Thunderstorm" },
 };
 
+// 캐싱: 10분간 날씨 데이터 재사용
+let cachedWeather: WeatherData | null = null;
+let cacheExpiry = 0;
+const CACHE_TTL = 60 * 60 * 1000; // 1시간
+
 export async function getCurrentWeather(): Promise<WeatherData> {
+  if (cachedWeather && Date.now() < cacheExpiry) {
+    console.log("Using cached weather data");
+    return cachedWeather;
+  }
+
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${DEFAULT_LAT}&longitude=${DEFAULT_LON}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&hourly=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FTaipei&forecast_days=1`;
 
   const res = await fetch(url);
   if (!res.ok) {
+    if (cachedWeather) {
+      console.log("API error, returning stale cache");
+      return cachedWeather;
+    }
     throw new Error(`Weather API error: ${res.status} ${res.statusText}`);
   }
 
@@ -83,7 +97,7 @@ export async function getCurrentWeather(): Promise<WeatherData> {
     }
   }
 
-  return {
+  const weather: WeatherData = {
     temp: Math.round(current.temperature_2m),
     tempMax: Math.round(data.daily.temperature_2m_max[0]),
     tempMin: Math.round(data.daily.temperature_2m_min[0]),
@@ -94,6 +108,12 @@ export async function getCurrentWeather(): Promise<WeatherData> {
     city: DEFAULT_CITY,
     hourly,
   };
+
+  cachedWeather = weather;
+  cacheExpiry = Date.now() + CACHE_TTL;
+  console.log("Weather data cached for 10 min");
+
+  return weather;
 }
 
 export function getWeatherType(code: number): string {
