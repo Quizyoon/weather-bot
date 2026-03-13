@@ -1,4 +1,4 @@
-import { FlexMessage, FlexBubble, FlexCarousel } from "@line/bot-sdk";
+import { FlexMessage, FlexBubble } from "@line/bot-sdk";
 import { WeatherData, getWeatherEmoji, getSmallWeatherEmoji } from "../services/weather";
 import { GiftProduct, WeatherCondition } from "../services/giftshop";
 
@@ -23,7 +23,6 @@ export function buildRecommendCard(
   const emoji = getWeatherEmoji(weather.weatherCode);
   const message = CONDITION_MSG_EN[condition];
 
-  // 시간대별 날씨 블록
   const hourlyBlocks = weather.hourly.map((h) => ({
     type: "box" as const,
     layout: "vertical" as const,
@@ -56,6 +55,54 @@ export function buildRecommendCard(
     ],
   }));
 
+  const productItems = gifts.map((gift) => ({
+    type: "box" as const,
+    layout: "horizontal" as const,
+    contents: [
+      {
+        type: "box" as const,
+        layout: "vertical" as const,
+        flex: 1,
+        contents: [
+          {
+            type: "text" as const,
+            text: gift.name,
+            size: "14px" as any,
+            color: "#111111",
+            weight: "bold" as const,
+            wrap: true,
+            maxLines: 2,
+          },
+          {
+            type: "text" as const,
+            text: `NT$ ${gift.price}`,
+            size: "12px" as any,
+            color: "#999999",
+            margin: "4px" as any,
+          },
+        ],
+      },
+      {
+        type: "text" as const,
+        text: "Send Gift",
+        size: "13px" as any,
+        color: "#000000",
+        align: "end" as const,
+        gravity: "center" as const,
+        flex: 0,
+        action: {
+          type: "uri" as const,
+          label: "Send Gift",
+          uri: gift.shopUrl,
+        },
+      },
+    ],
+    paddingAll: "12px",
+    backgroundColor: "#F0F0F0",
+    cornerRadius: "8px",
+    margin: "8px" as any,
+  }));
+
   const now = new Date().toLocaleDateString("en-US", {
     timeZone: "Asia/Taipei",
     month: "short",
@@ -64,8 +111,7 @@ export function buildRecommendCard(
     minute: "2-digit",
   });
 
-  // 날씨 버블
-  const weatherBubble: FlexBubble = {
+  const bubble: FlexBubble = {
     type: "bubble",
     size: "mega" as any,
     body: {
@@ -139,10 +185,7 @@ export function buildRecommendCard(
             },
           ],
         },
-        {
-          type: "separator",
-          margin: "16px" as any,
-        },
+        // 시간대별 날씨
         {
           type: "box",
           layout: "horizontal",
@@ -151,53 +194,17 @@ export function buildRecommendCard(
             ? hourlyBlocks
             : [{ type: "filler" as const }],
         },
-      ],
-    },
-  };
-
-  // 상품 버블들
-  const productBubbles: FlexBubble[] = gifts.map((gift) => ({
-    type: "bubble",
-    size: "mega" as any,
-    body: {
-      type: "box",
-      layout: "vertical",
-      paddingAll: "16px",
-      contents: [
-        {
-          type: "text",
-          text: "Gift Recommendation",
-          size: "12px" as any,
-          color: "#999999",
-        },
+        // 추천 메시지
         {
           type: "text",
           text: message,
           size: "14px" as any,
           color: "#333333",
           wrap: true,
-          margin: "8px" as any,
-        },
-        {
-          type: "separator",
           margin: "16px" as any,
         },
-        {
-          type: "text",
-          text: gift.name,
-          size: "16px" as any,
-          color: "#111111",
-          weight: "bold",
-          wrap: true,
-          margin: "16px" as any,
-        },
-        {
-          type: "text",
-          text: `NT$ ${gift.price}`,
-          size: "13px" as any,
-          color: "#999999",
-          margin: "8px" as any,
-        },
+        // 상품 목록
+        ...(productItems as any[]),
       ],
     },
     footer: {
@@ -210,7 +217,7 @@ export function buildRecommendCard(
           contents: [
             {
               type: "text",
-              text: "Send Gift",
+              text: "More Gifts",
               size: "13px" as any,
               color: "#111111",
               align: "center" as const,
@@ -223,8 +230,8 @@ export function buildRecommendCard(
           cornerRadius: "8px",
           action: {
             type: "uri" as const,
-            label: "Send Gift",
-            uri: gift.shopUrl,
+            label: "More Gifts",
+            uri: "https://giftshop-tw.line.me",
           },
         } as any,
       ],
@@ -233,16 +240,11 @@ export function buildRecommendCard(
       paddingStart: "16px",
       paddingEnd: "16px",
     },
-  }));
-
-  const carousel: FlexCarousel = {
-    type: "carousel",
-    contents: [weatherBubble, ...productBubbles],
   };
 
   return {
     type: "flex",
     altText: `${emoji} ${weather.city} ${weather.temp}° — ${message}`,
-    contents: carousel,
+    contents: bubble,
   };
 }
