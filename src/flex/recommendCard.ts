@@ -223,7 +223,9 @@ export function buildRecommendCard(
           margin: "16px" as any,
         },
         // 상품 목록
-        ...(productItems as any[]),
+        ...(productItems.map((item, i) =>
+          i === 0 ? { ...item, margin: "16px" } : item
+        ) as any[]),
       ],
     },
     footer: {
