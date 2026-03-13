@@ -168,11 +168,27 @@ export function buildRecommendCard(
                 },
                 {
                   type: "text",
-                  text: `${weather.tempMax}° / ${weather.tempMin}°  💧${weather.humidity}%`,
+                  contents: [
+                    {
+                      type: "span",
+                      text: `${weather.tempMax}°`,
+                      color: "#000000",
+                    },
+                    {
+                      type: "span",
+                      text: ` / ${weather.tempMin}°  `,
+                      color: "#999999",
+                    },
+                    {
+                      type: "span",
+                      text: `💧${weather.humidity}%`,
+                      color: "#96B2FF",
+                    },
+                  ],
+                  text: " ",
                   size: "12px" as any,
-                  color: "#999999",
                   margin: "4px" as any,
-                },
+                } as any,
               ],
             },
             {
@@ -193,6 +209,11 @@ export function buildRecommendCard(
           contents: hourlyBlocks.length > 0
             ? hourlyBlocks
             : [{ type: "filler" as const }],
+        },
+        // 디바이더
+        {
+          type: "separator",
+          margin: "16px" as any,
         },
         // 추천 메시지
         {
