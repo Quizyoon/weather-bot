@@ -92,7 +92,6 @@ export function buildRecommendCard(
         ],
       },
     ],
-    cornerRadius: "8px",
     margin: "8px" as any,
     action: {
       type: "uri" as const,
