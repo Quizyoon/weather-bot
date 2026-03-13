@@ -48,6 +48,7 @@ export async function handleEvent(
       console.log("Fetching weather recommendation...");
       const card = await getWeatherRecommendation();
       console.log("Card result:", card ? "OK" : "null");
+      if (card) console.log("Card JSON:", JSON.stringify(card));
       if (card) {
         try {
           await client.replyMessage({

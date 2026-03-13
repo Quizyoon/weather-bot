@@ -79,7 +79,7 @@ export function buildRecommendCard(
             text: gift.name,
             size: "12px" as any,
             color: "#111111",
-            wrap: false,
+            wrap: true,
             maxLines: 1,
           },
           {
