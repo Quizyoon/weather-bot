@@ -60,22 +60,13 @@ export function buildRecommendCard(
     layout: "horizontal" as const,
     contents: [
       {
-        type: "box" as const,
-        layout: "vertical" as const,
-        width: "44px",
-        height: "44px",
+        type: "image" as const,
+        url: gift.imageUrl,
+        size: "full" as any,
+        aspectRatio: "1:1",
+        aspectMode: "cover" as const,
         flex: 0,
-        contents: [
-          {
-            type: "image" as const,
-            url: gift.imageUrl,
-            size: "full" as any,
-            aspectRatio: "1:1",
-            aspectMode: "cover" as const,
-          },
-        ],
-        cornerRadius: "4px",
-      } as any,
+      },
       {
         type: "box" as const,
         layout: "vertical" as const,
