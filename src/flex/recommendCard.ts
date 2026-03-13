@@ -60,18 +60,27 @@ export function buildRecommendCard(
     layout: "horizontal" as const,
     contents: [
       {
+        type: "image" as const,
+        url: gift.imageUrl,
+        size: "44px" as any,
+        aspectRatio: "1:1",
+        aspectMode: "cover" as const,
+        flex: 0,
+      },
+      {
         type: "box" as const,
         layout: "vertical" as const,
         flex: 1,
+        paddingStart: "12px" as any,
+        justifyContent: "center" as any,
         contents: [
           {
             type: "text" as const,
             text: gift.name,
-            size: "14px" as any,
+            size: "12px" as any,
             color: "#111111",
-            weight: "bold" as const,
-            wrap: true,
-            maxLines: 2,
+            wrap: false,
+            maxLines: 1,
           },
           {
             type: "text" as const,
@@ -82,25 +91,14 @@ export function buildRecommendCard(
           },
         ],
       },
-      {
-        type: "text" as const,
-        text: "Send Gift",
-        size: "13px" as any,
-        color: "#000000",
-        align: "end" as const,
-        gravity: "center" as const,
-        flex: 0,
-        action: {
-          type: "uri" as const,
-          label: "Send Gift",
-          uri: gift.shopUrl,
-        },
-      },
     ],
-    paddingAll: "12px",
-    backgroundColor: "#F0F0F0",
     cornerRadius: "8px",
     margin: "8px" as any,
+    action: {
+      type: "uri" as const,
+      label: gift.name,
+      uri: gift.shopUrl,
+    },
   }));
 
   const now = new Date().toLocaleDateString("en-US", {
@@ -113,7 +111,7 @@ export function buildRecommendCard(
 
   const bubble: FlexBubble = {
     type: "bubble",
-    size: "mega" as any,
+    size: "kilo" as any,
     body: {
       type: "box",
       layout: "vertical",
@@ -159,35 +157,84 @@ export function buildRecommendCard(
                   color: "#111111",
                 },
                 {
-                  type: "text",
-                  text: `📍 ${weather.city}`,
-                  size: "12px" as any,
-                  color: "#111111",
-                  weight: "bold",
+                  type: "box",
+                  layout: "horizontal",
                   margin: "8px" as any,
-                },
-                {
-                  type: "text",
+                  alignItems: "center",
                   contents: [
                     {
-                      type: "span",
-                      text: `${weather.tempMax}°`,
-                      color: "#000000",
+                      type: "box",
+                      layout: "vertical",
+                      width: "8px",
+                      height: "10px",
+                      flex: 0,
+                      contents: [
+                        {
+                          type: "image",
+                          url: "https://raw.githubusercontent.com/Quizyoon/weather-bot/main/img/place.png",
+                          size: "full",
+                          aspectMode: "fit",
+                        },
+                      ],
                     },
                     {
-                      type: "span",
-                      text: ` / ${weather.tempMin}°  `,
-                      color: "#999999",
-                    },
-                    {
-                      type: "span",
-                      text: `💧${weather.humidity}%`,
-                      color: "#96B2FF",
+                      type: "text",
+                      text: weather.city,
+                      size: "12px",
+                      color: "#111111",
+                      weight: "bold",
+                      margin: "4px",
                     },
                   ],
-                  text: " ",
-                  size: "12px" as any,
+                } as any,
+                {
+                  type: "box",
+                  layout: "horizontal",
                   margin: "4px" as any,
+                  alignItems: "center",
+                  contents: [
+                    {
+                      type: "text",
+                      contents: [
+                        {
+                          type: "span",
+                          text: `${weather.tempMax}°`,
+                          color: "#000000",
+                        },
+                        {
+                          type: "span",
+                          text: ` / ${weather.tempMin}°  `,
+                          color: "#999999",
+                        },
+                      ],
+                      text: " ",
+                      size: "12px",
+                      flex: 0,
+                    },
+                    {
+                      type: "box",
+                      layout: "vertical",
+                      width: "6px",
+                      height: "9px",
+                      flex: 0,
+                      contents: [
+                        {
+                          type: "image",
+                          url: "https://raw.githubusercontent.com/Quizyoon/weather-bot/main/img/Fill%204.png",
+                          size: "full",
+                          aspectMode: "fit",
+                        },
+                      ],
+                    },
+                    {
+                      type: "text",
+                      text: `${weather.humidity}%`,
+                      size: "12px",
+                      color: "#96B2FF",
+                      flex: 0,
+                      margin: "2px",
+                    },
+                  ],
                 } as any,
               ],
             },
@@ -214,6 +261,7 @@ export function buildRecommendCard(
         {
           type: "separator",
           margin: "16px" as any,
+          color: "#EEEEEE",
         },
         // 추천 메시지
         {
@@ -245,9 +293,9 @@ export function buildRecommendCard(
               weight: "bold" as const,
             },
           ],
-          height: "35px",
+          height: "40px",
           justifyContent: "center" as any,
-          backgroundColor: "#A5FF05",
+          backgroundColor: "#F0F0F0",
           cornerRadius: "8px",
           action: {
             type: "uri" as const,

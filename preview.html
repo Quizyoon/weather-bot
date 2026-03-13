@@ -7,7 +7,7 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #8B9DC3; min-height: 100vh; display: flex; justify-content: center; padding: 40px 16px; }
-  .phone { width: 300px; }
+  .phone { width: 230px; }
   .card { background: #fff; border-radius: 16px; overflow: hidden; }
   .card-body { padding: 16px; }
   .label { font-size: 12px; color: #999; font-weight: bold; }
@@ -16,22 +16,23 @@
   .weather-main { display: flex; align-items: center; margin-top: 16px; }
   .weather-left { flex: 1; }
   .temp-big { font-size: 55px; font-weight: bold; color: #111; line-height: 1; }
-  .location { font-size: 12px; color: #111; margin-top: 8px; font-weight: bold; }
-  .temp-range { font-size: 12px; color: #999; margin-top: 4px; }
+  .location { font-size: 12px; color: #111; margin-top: 8px; font-weight: bold; display: flex; align-items: center; }
+  .temp-range { font-size: 12px; color: #999; margin-top: 8px; display: flex; align-items: center; }
   .weather-emoji { font-size: 55px; }
-  .hourly { display: flex; margin-top: 16px; }
+  .hourly { display: flex; margin-top: 24px; }
   .hourly-item { flex: 1; text-align: center; }
   .hourly-time { font-size: 12px; color: #999; }
   .hourly-icon { font-size: 20px; margin: 4px 0; }
   .hourly-temp { font-size: 12px; color: #111; font-weight: bold; }
-  .recommend-msg { font-size: 14px; color: #333; margin-top: 16px; }
-  .product { display: flex; align-items: center; background: #F0F0F0; border-radius: 8px; padding: 12px; margin-top: 8px; }
-  .product-info { flex: 1; }
-  .product-name { font-size: 14px; color: #111; font-weight: bold; }
+  .recommend-msg { font-size: 14px; color: #333; margin-top: 16px; margin-bottom: 16px; }
+  .product { display: flex; align-items: center; border-radius: 8px; margin-top: 8px; }
+  .product-info { flex: 1; min-width: 0; padding: 0 10px; }
+  .product-name { font-size: 12px; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .product-price { font-size: 12px; color: #999; margin-top: 4px; }
-  .product-btn { font-size: 13px; color: #000; cursor: pointer; white-space: nowrap; }
+  .product-img { width: 44px; height: 44px; border-radius: 4px; object-fit: cover; flex-shrink: 0; }
+  .product-btn { font-size: 13px; color: #fff; background: #000; border-radius: 4px; padding: 8px; cursor: pointer; white-space: nowrap; font-weight: bold; }
   .card-footer { padding: 0 16px 16px; }
-  .footer-btn { display: flex; align-items: center; justify-content: center; background: #A5FF05; color: #111; font-size: 13px; font-weight: bold; height: 35px; border-radius: 8px; text-decoration: none; }
+  .footer-btn { display: flex; align-items: center; justify-content: center; background: #F0F0F0; color: #111; font-size: 13px; font-weight: bold; height: 40px; border-radius: 8px; text-decoration: none; }
   h3 { color: #fff; margin-bottom: 12px; font-size: 14px; opacity: 0.8; }
 </style>
 </head>
@@ -47,8 +48,8 @@
       <div class="weather-main">
         <div class="weather-left">
           <div class="temp-big">18°</div>
-          <div class="location">📍 Taipei</div>
-          <div class="temp-range"><span style="color:#000000">22°</span> / 16°  <span style="color:#96B2FF">💧 78%</span></div>
+          <div class="location"><img src="img/place.png" style="width:8px;height:10px;vertical-align:middle;margin-right:4px;">Taipei</div>
+          <div class="temp-range"><span style="color:#000000">22°</span> / 16°  <img src="img/Fill 4.png" style="width:6px;height:9px;vertical-align:middle;margin:0 2px;"><span style="color:#96B2FF">78%</span></div>
         </div>
         <div class="weather-emoji">☁️</div>
       </div>
@@ -81,32 +82,32 @@
         </div>
       </div>
 
-      <hr style="border:none; border-top:1px solid #E5E5E5; margin-top:16px;">
+      <hr style="border:none; border-top:1px solid #EEEEEE; margin-top:16px;">
 
       <div class="recommend-msg">Cloudy day — a warm cup of tea sounds perfect ☁️</div>
 
       <div class="product">
+        <img class="product-img" src="https://lcp-prod-obs.line-scdn.net/0hvcy5N9K6KUxETDcxtn5WGxURJT13PS1ELTQ0cWBOCAkeOjxsMW8ZUwYNJzcaNxVFBCI2dRFPDCMJdAVoEyoHTxYSCxkOOhFGPi40YR4MHDcZID5_eWw">
         <div class="product-info">
           <div class="product-name">綜合花茶禮</div>
           <div class="product-price">NT$ 505</div>
         </div>
-        <div class="product-btn">Send Gift</div>
       </div>
 
       <div class="product">
+        <img class="product-img" src="https://lcp-prod-obs.line-scdn.net/0hzkFo8O8LJUR7FjX6XjNaEypLKTVIZyFMEm44eV8XBC8PejF3OC0WVDlUKQJSbRlNO3g6fS4VACs2LglgLHALRylLKxIXfBx0EnEBaSIUED8uejJ3RjY">
         <div class="product-info">
           <div class="product-name">黑糖薑茶/黑糖桂圓禮盒</div>
           <div class="product-price">NT$ 359</div>
         </div>
-        <div class="product-btn">Send Gift</div>
       </div>
 
       <div class="product">
+        <img class="product-img" src="https://lcp-prod-obs.line-scdn.net/0hxbbqogrUJ01fCDhei-dYGgxVKzxseSNFNnA6cHtNBTYvcBxtZms7cCgJLBQOOB9pCCUJTTtOBiUZOQF9AzI9TntBKSE7eDMYADcAdzgJLAsgfhtHOWYUWw">
         <div class="product-info">
           <div class="product-name">咖啡點心組</div>
           <div class="product-price">NT$ 549</div>
         </div>
-        <div class="product-btn">Send Gift</div>
       </div>
     </div>
     <div class="card-footer">
