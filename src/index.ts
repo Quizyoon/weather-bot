@@ -18,6 +18,7 @@ const app = express();
 app.post("/webhook", middleware(middlewareConfig), async (req, res) => {
   try {
     const events = req.body.events;
+    console.log(`Webhook received: ${events.length} events`, JSON.stringify(events));
     await Promise.allSettled(
       events.map((event: any) => handleEvent(client, event))
     );
